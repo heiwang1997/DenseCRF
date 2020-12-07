@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(densecrf LANGUAGES CXX)
+project(densecrf_cuda LANGUAGES CXX)
 
 # provide FindCUDAToolkit for cmake versions below 3.17
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/cmake)
