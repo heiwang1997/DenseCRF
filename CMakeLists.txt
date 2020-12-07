@@ -1,6 +1,13 @@
 cmake_minimum_required(VERSION 3.8)
-project(densecrf LANGUAGES CXX CUDA)
- 
+project(densecrf LANGUAGES CXX)
+
+# provide FindCUDAToolkit for cmake versions below 3.17
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/cmake)
+
+find_package(CUDAToolkit REQUIRED)
+set(CMAKE_CUDA_COMPILER ${CUDAToolkit_NVCC_EXECUTABLE})
+enable_language(CUDA)
+
 # CPU Example Target
 add_executable(example_cpu
   examples/example_cpu.cpp
