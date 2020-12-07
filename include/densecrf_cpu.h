@@ -18,28 +18,28 @@ protected:
 
 public:
 
-	// Create a dense CRF model of size N with M labels
-	explicit DenseCRFCPU( int N ) : DenseCRF(N) {
-	    unary_ = new float[N * M];
-	    current_ = new float[N * M];
-	    next_ = new float[N * M];
-	    tmp_ = new float[N * M];
-	}
+    // Create a dense CRF model of size N with M labels
+    explicit DenseCRFCPU( int N ) : DenseCRF(N) {
+        unary_ = new float[N * M];
+        current_ = new float[N * M];
+        next_ = new float[N * M];
+        tmp_ = new float[N * M];
+    }
 
     ~DenseCRFCPU() override {
-	    delete[] unary_;
-	    delete[] current_;
-	    delete[] next_;
-	    delete[] tmp_;
+        delete[] unary_;
+        delete[] current_;
+        delete[] next_;
+        delete[] tmp_;
         delete[] map_;
     }
 
     DenseCRFCPU( DenseCRFCPU & o ) = delete;
-	
-	// Set the unary potential for all variables and labels (memory order is [x0l0 x0l1 x0l2 .. x1l0 x1l1 ...])
-	void setUnaryEnergy( const float * unary ) override {
-	    memcpy(unary_, unary, sizeof(float) * N_ * M);
-	}
+
+    // Set the unary potential for all variables and labels (memory order is [x0l0 x0l1 x0l2 .. x1l0 x1l1 ...])
+    void setUnaryEnergy( const float * unary ) override {
+        memcpy(unary_, unary, sizeof(float) * N_ * M);
+    }
 
     // Set the unary potential via label. Length of label array should equal to N.
     void setUnaryEnergyFromLabel(const short* labelGPU, float confidence = 0.5) override;
