@@ -57,7 +57,7 @@ static float round( float v ) {
 }
 #endif
 
-namespace DenseCRF {
+namespace dcrf_cuda {
 
 /************************************************/
 /***                Hash Table                ***/

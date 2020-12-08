@@ -5,7 +5,7 @@
 #include <chrono>
 #include <iostream>
 #include "util.h"
-using namespace DenseCRF;
+using namespace dcrf_cuda;
 using namespace std::chrono;
 using namespace std;
 

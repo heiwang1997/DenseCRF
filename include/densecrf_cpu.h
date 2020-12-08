@@ -5,7 +5,7 @@
 #include <cstring>
 #include <cmath>
 
-namespace DenseCRF {
+namespace dcrf_cuda {
 
 // CPU Implementation
 template<int M>

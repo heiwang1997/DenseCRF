@@ -28,7 +28,7 @@ SOFTWARE.*/
 #include <utility>
 #include <iostream>
 
-namespace DenseCRF {
+namespace dcrf_cuda {
 
 
 void cudaErrorCheck() {

@@ -2,7 +2,7 @@
 
 #include <vector>
 
-namespace DenseCRF {
+namespace dcrf_cuda {
 
 enum Device {
     CPU, GPU

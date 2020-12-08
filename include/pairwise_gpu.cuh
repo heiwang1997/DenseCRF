@@ -3,7 +3,7 @@
 #include "densecrf_base.h"
 #include "permutohedral_gpu.cuh"
 
-namespace DenseCRF {
+namespace dcrf_cuda {
 
 // Weight applying kernels for potts potential.
 template<int M, int F>

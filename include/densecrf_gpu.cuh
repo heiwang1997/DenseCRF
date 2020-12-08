@@ -6,7 +6,7 @@
 #include <cuda_runtime.h>
 #include <device_launch_parameters.h>
 
-namespace DenseCRF {
+namespace dcrf_cuda {
 
 // GPU CUDA Implementation
 template<int M>
