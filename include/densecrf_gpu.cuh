@@ -6,7 +6,7 @@
 #include <cuda_runtime.h>
 #include <device_launch_parameters.h>
 
-namespace DenseCRF {
+namespace dcrf_cuda {
 
 // GPU CUDA Implementation
 template<int M>
@@ -19,8 +19,8 @@ protected:
 
 public:
 
-	// Create a dense CRF model of size N with M labels
-	explicit DenseCRFGPU( int N ) : DenseCRF(N) {
+    // Create a dense CRF model of size N with M labels
+    explicit DenseCRFGPU( int N ) : DenseCRF(N) {
         cudaMalloc((void**)&unary_, sizeof(float) * N * M);
         cudaMalloc((void**)&current_, sizeof(float) * N * M);
         cudaMalloc((void**)&next_, sizeof(float) * N * M);
@@ -36,11 +36,11 @@ public:
     }
 
     DenseCRFGPU( DenseCRFGPU & o ) = delete;
-	
-	// Set the unary potential for all variables and labels (memory order is [x0l0 x0l1 x0l2 .. x1l0 x1l1 ...])
-	void setUnaryEnergy( const float * unaryGPU ) override {
+
+    // Set the unary potential for all variables and labels (memory order is [x0l0 x0l1 x0l2 .. x1l0 x1l1 ...])
+    void setUnaryEnergy( const float * unaryGPU ) override {
         cudaMemcpy(unary_, unaryGPU, sizeof(float) * N_ * M, cudaMemcpyDeviceToDevice);
-	}
+    }
 
     // Set the unary potential via label. Length of label array should equal to N.
     void setUnaryEnergyFromLabel(const short* labelGPU, float confidence = 0.5) override;
@@ -51,11 +51,11 @@ public:
 template<int M>
 __global__ static void expNormKernel(int N, float* out, const float* in, float scale, float relax)
 {
-	const int idx = threadIdx.x + blockIdx.x * blockDim.x;
+    const int idx = threadIdx.x + blockIdx.x * blockDim.x;
     if (idx >= N)
         return;
     const float* b = in + idx * M;
-	// Find the max and subtract it so that the exp doesn't explode
+    // Find the max and subtract it so that the exp doesn't explode
     float mx = scale * b[0];
     for (int j = 1; j < M; ++j) {
         if (mx < scale * b[j]) {
@@ -68,7 +68,7 @@ __global__ static void expNormKernel(int N, float* out, const float* in, float s
         V[j] = __expf(scale * b[j] - mx);
         tt += V[j];
     }
-	// Make it a probability
+    // Make it a probability
     for (int j = 0; j < M; ++j) {
         V[j] /= tt;
     }
@@ -137,7 +137,7 @@ void DenseCRFGPU<M>::setUnaryEnergyFromLabel(const short* labelGPU, float* confi
 template<int M>
 __global__ void computeMAP(int N, const float* in_prob, short* out_map)
 {
-	const int idx = threadIdx.x + blockIdx.x * blockDim.x;
+    const int idx = threadIdx.x + blockIdx.x * blockDim.x;
     if (idx >= N)
         return;
 
@@ -167,11 +167,11 @@ void DenseCRFGPU<M>::buildMap() {
 template<int M>
 __global__ void invertKernel(int N, const float* in_unary, float* out_next)
 {
-	const int idx = threadIdx.x + blockIdx.x * blockDim.x;
+    const int idx = threadIdx.x + blockIdx.x * blockDim.x;
     if (idx >= N)
         return;
-	const float* p = in_unary + idx * M;
-	float* n = out_next + idx * M;
+    const float* p = in_unary + idx * M;
+    float* n = out_next + idx * M;
     for (int m = 0; m < M; ++m) {
         n[m] = -p[m];
     }

@@ -3,7 +3,7 @@
 #include "densecrf_base.h"
 #include "permutohedral_cpu.h"
 
-namespace DenseCRF {
+namespace dcrf_cuda {
 
 template<int M, int F>
 class PottsPotentialCPU : public PairwisePotential {

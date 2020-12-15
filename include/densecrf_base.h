@@ -2,7 +2,7 @@
 
 #include <vector>
 
-namespace DenseCRF {
+namespace dcrf_cuda {
 
 enum Device {
     CPU, GPU
@@ -42,12 +42,6 @@ public:
         for (auto* pPairwise : pairwise_) {
             delete pPairwise;
         }
-    }
-
-    //// Factory Functions.
-    template<int M>
-    static DenseCRF* Create(int N) {
-
     }
 
     // Add your own favorite pairwise potential (ownwership will be transfered to this class)
