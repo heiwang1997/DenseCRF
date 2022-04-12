@@ -3,8 +3,7 @@
 #include "densecrf_base.h"
 #include "pairwise_gpu.cuh"
 #include <vector>
-#include <cuda_runtime.h>
-#include <device_launch_parameters.h>
+
 
 namespace dcrf_cuda {
 
