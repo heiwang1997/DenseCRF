@@ -110,13 +110,14 @@ int main( int argc, char* argv[]){
     // Do map inference
     auto start = steady_clock::now();
     crf.inference(10, true);
-    auto stop = steady_clock::now();
-    auto duration = duration_cast<microseconds>(stop - start);
-    cout << "Time Elaspsed for inference = " << duration.count() / 1000.0 << "ms" << endl;
     short * map = new short[W*H];
     short * mapGPU = crf.getMap();
     cudaMemcpy(map, mapGPU, sizeof(short) * W * H, cudaMemcpyDeviceToHost);
 
+    auto stop = steady_clock::now();
+    auto duration = duration_cast<microseconds>(stop - start);
+    cout << "Time Elaspsed for inference = " << duration.count() / 1000.0 << "ms" << endl;
+ 
     // Store the result
     unsigned char *res = colorize( map, W, H );
     writePPM( argv[3], W, H, res );
